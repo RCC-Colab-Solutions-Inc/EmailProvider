@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('email_account_providers', function (Blueprint $table) {
             $table->id();
+            $table->string('applicationid');
             $table->string('applicationname');
             $table->string('host');
             $table->unsignedSmallInteger('port');
