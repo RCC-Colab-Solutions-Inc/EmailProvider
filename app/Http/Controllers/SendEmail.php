@@ -41,11 +41,19 @@ class SendEmail extends Controller
         Config::set('mail.mailers.smtp.password', $emailAccountProvider->password);
         Config::set('mail.from.address', $emailAccountProvider->from);
         Config::set('mail.from.name', $emailAccountProvider->fromname);
+        //set the cc and bcc
+        Config::set('mail.cc.address', $emailAccountProvider->carboncopy);
+        Config::set('mail.bcc.address', $emailAccountProvider->blindcarboncopy);
 
-        // Send the email using the SendEmailNotification mailable
+        // Send the email using the SendEmailNotification mailable with cc and bcc
         try {
-            Mail::to($validated['emailreceiver'])->send(new SendEmailNotification($validated['emailsubject'], $validated['emailbody']));
+            //send the email with cc and bcc
+            Mail::to($validated['emailreceiver'])->cc($emailAccountProvider->carboncopy)->bcc($emailAccountProvider->blindcarboncopy)->send(new SendEmailNotification($validated['emailsubject'], $validated['emailbody']));
             return response()->json(['message' => 'Email sent successfully!']);
+            
+
+            // Mail::to($validated['emailreceiver'])->send(new SendEmailNotification($validated['emailsubject'], $validated['emailbody']));
+            // return response()->json(['message' => 'Email sent successfully!']);
         } catch (\Exception $e) {
             Log::error('Email sending failed:', ['error' => $e->getMessage()]);
             return response()->json(['message' => $e->getMessage()], 500);

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('fromname');
             $table->string('username');
             $table->string('password');
+            $table->string('carboncopy')->nullable();
+            $table->string('blindcarboncopy')->nullable();
             $table->boolean('default')->default(false);
             $table->boolean('active')->default(true);
             $table->timestamps();
